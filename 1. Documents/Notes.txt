@@ -1,0 +1,13 @@
+﻿1. Business Model - Lộc 	
+2. Design Specification 
+2.1 Overview - Đức 
+
+2.2 Use case - Lộc 
+
+2.3 ERD - Nghĩa 
+2.4 Class diagram - Tín 
+
+2.5 Sequence diagram - Tín
+
+3. Implementation - Nghĩa
+4. Maintenance Plan - Đức
