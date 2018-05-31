@@ -2,8 +2,7 @@
 2. Design Specification 
 2.1 Overview - Đức 
 
-2.2 Use case - Lộc 
-
+2.2 Use case - Nghĩa
 2.3 ERD - Nghĩa 
 2.4 Class diagram - Tín 
 
