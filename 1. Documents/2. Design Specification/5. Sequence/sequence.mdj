@@ -1992,29 +1992,6 @@
 											"showType": true
 										},
 										{
-											"_type": "UMLNoteView",
-											"_id": "AAAAAAFjtepCMl1urn4=",
-											"_parent": {
-												"$ref": "AAAAAAFjtZO+wVwSZIQ="
-											},
-											"visible": true,
-											"enabled": true,
-											"lineColor": "#000000",
-											"fillColor": "#ffffff",
-											"fontColor": "#000000",
-											"font": "Arial;13;0",
-											"showShadow": true,
-											"containerChangeable": false,
-											"containerExtending": false,
-											"left": 632,
-											"top": 280,
-											"width": 85.0126953125,
-											"height": 38,
-											"autoResize": false,
-											"text": "If(customer valid)",
-											"wordWrap": true
-										},
-										{
 											"_type": "UMLSeqMessageView",
 											"_id": "AAAAAAFjteyTK115LLw=",
 											"_parent": {
@@ -2054,7 +2031,7 @@
 													},
 													"edgePosition": 1,
 													"underline": false,
-													"text": "6 : login success message",
+													"text": "6 : return result",
 													"horizontalAlignment": 2,
 													"verticalAlignment": 5,
 													"wordWrap": false
@@ -2212,9 +2189,9 @@
 													"showShadow": true,
 													"containerChangeable": false,
 													"containerExtending": false,
-													"left": 233,
+													"left": 226,
 													"top": 350,
-													"width": 78.04443359375,
+													"width": 92.4853515625,
 													"height": 13,
 													"autoResize": false,
 													"alpha": 2.828691511848775,
@@ -2224,7 +2201,7 @@
 													},
 													"edgePosition": 1,
 													"underline": false,
-													"text": "7 : Logged in",
+													"text": "7 : Return result",
 													"horizontalAlignment": 2,
 													"verticalAlignment": 5,
 													"wordWrap": false
@@ -2454,7 +2431,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFjtZO+wFwRS68="
 									},
-									"name": "login success message",
+									"name": "return result",
 									"source": {
 										"$ref": "AAAAAAFjta43mlyQRnM="
 									},
@@ -2471,7 +2448,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFjtZO+wFwRS68="
 									},
-									"name": "Logged in",
+									"name": "Return result",
 									"source": {
 										"$ref": "AAAAAAFjta32vVxvt/Y="
 									},
