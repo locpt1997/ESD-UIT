@@ -21,45 +21,79 @@ namespace ConsoleApp1
         static HttpClient httpClient;
         static HttpClientHandler handler;
         static CookieContainer cookie = new CookieContainer();
-        static string[] ListMenuLinksCat = new string[22];
-        static string[] ListMenuLinksDog = new string[18];
+        public static string[] ListMenuLinksCat = new string[22]; //[Tổng số trang con]
+        public static string[] ListMenuLinksDog = new string[18]; //[Tông số trang con]
         public static System.IO.FileStream fs = new System.IO.FileStream
-(@"C:\Users\PHANTHĂNGLỘC\Desktop\CrawData.txt", FileMode.Append, FileAccess.Write, FileShare.None);
+(@"C:\Users\PHANTHĂNGLỘC\Desktop\CrawData.txt", FileMode.Append, FileAccess.Write, FileShare.None); //Ghi đường dẫn lưu file
         public static StreamWriter sw = new StreamWriter(fs);
 
         static void Main(string[] args)
         {
-
-
-            string uri = "https://petthings.vn/";
+            string uri = "https://petthings.vn/"; //Link website
             IniHttpClient();
-            string url = "/thuc-an-kho-cho-meo?";
-            //CrawlLinks(uri);
 
+            //Đoạn code cho máy yếu
+            //string url = "/qua-n-a-o-pet-clothes"; // Code cho máy yếu. Nhập trang bằng tay
+
+            ////System.IO.FileStream fss = new System.IO.FileStream
+            ////(@"C:\Users\PHANTHĂNGLỘC\Desktop\ListLink.txt", FileMode.Append, FileAccess.Write, FileShare.None); //Ghi đường dẫn lưu file để dễ nhập tay hơn
+            ////StreamWriter sww = new StreamWriter(fss);
+            ////CrawlLinks(uri);
+            ////sww.WriteLine("Mèo");
+            ////for (int i = 0; i < ListMenuLinksCat.Length; i++)
+            ////{
+            ////    sww.WriteLine(ListMenuLinksCat[i]);  //Ghi đường dẫn lưu file để dễ nhập tay hơn // Chạy 1 lần rồi chuyển thành commet
+            ////}
+            ////sww.WriteLine("Chó");
+            ////for (int i = 0; i < ListMenuLinksDog.Length; i++)
+            ////{
+            ////    sww.WriteLine(ListMenuLinksDog[i]);  //Ghi đường dẫn lưu file để dễ nhập tay hơn // Chạy 1 lần rồi chuyển thành commet
+            ////}
+
+            ////sww.Flush();
+            ////sww.Close();
+            ////fss.Close();
+
+            //int a = 0;
+            //CountPageinUrl(uri, url, ref a);
+            //if (a > 0)
+            //{
+            //    for (int j = 1; j <= a; j++)
+            //    {
+            //        CrawProduct(uri, url, j);
+            //    }
+            //}
+            //else
+            //{
+            //    CrawProduct(uri, url, 0);
+            //}
+
+            CrawlLinks(uri);
+           // //craw cho mèo
             //for (int i = 0; i < ListMenuLinksCat.Length; i++)
             //{
 
-            int a = 0;
-            CountPageinUrl(uri, url, ref a);
-            for (int j = 1; j <= a; j++)
-            {
-                CrawProduct(uri, url, j);
-            }
-
-            //}
-
-
-            //for (int i = 0; i < ListMenuLinksDog.Length; i++)
-            //{
-
             //    int a = 0;
-            //    CountPageinUrl(uri, ListMenuLinksDog[i], ref a);
+            //    CountPageinUrl(uri, ListMenuLinksCat[i], ref a);
             //    for (int j = 1; j <= a; j++)
             //    {
-            //        CrawProduct(uri, ListMenuLinksDog[i], j);
+            //        CrawProduct(uri, ListMenuLinksCat[i], j);
             //    }
 
             //}
+
+            //Craw cho chó
+            for (int i = 0; i < ListMenuLinksDog.Length; i++)
+            {
+
+                int a = 0;
+                CountPageinUrl(uri, ListMenuLinksDog[i], ref a);
+                for (int j = 1; j <= a; j++)
+                {
+                    CrawProduct(uri, ListMenuLinksDog[i], j);
+                }
+
+            }
 
             sw.Flush();
             sw.Close();
@@ -81,6 +115,8 @@ namespace ConsoleApp1
 
             httpClient.BaseAddress = new Uri("https://petthings.vn/");
         }
+
+        //Craw dữ liệu về, trả về kiểu string
         static string CrawlDataFromURL(string url)
         {
             string html = "";
@@ -93,18 +129,19 @@ namespace ConsoleApp1
             return html;
         }
 
+        //Craw toàn bộ links con có trong menu sản phẩm từ url
         static void CrawlLinks(string url)
         {
             string html = CrawlDataFromURL(url);
             var MenuMainList = Regex.Matches(html, @"(normal sub menu)(.*?)(end normal sub menu)"
         , RegexOptions.Singleline);
-            int o = 0;
+            int o = 0; // vì menu sản phẩm của mèo nằm trước chó
             foreach (var Menu in MenuMainList)
             {
                 if (o == 0)
                 {
                     var ListLinkCats = Regex.Matches(Menu.ToString(), @"href(.*?)>", RegexOptions.Singleline);
-                    o++;
+                    o++; // sang chó
                     int x = 0;
                     foreach (var Menu0 in ListLinkCats)
                     {
@@ -131,6 +168,8 @@ namespace ConsoleApp1
             }
         }
 
+
+        //Đếm số lượng trang có trong link
         static void CountPageinUrl(string url, string link, ref int a)
         {
             url = string.Concat(url, link);
@@ -150,10 +189,18 @@ namespace ConsoleApp1
                 }
             }
         }
+
+        //Craw sản phẩm
         static void CrawProduct(string uri, string link, int i)
         {
-            string a = string.Concat("page=", i);
-            string url = string.Concat(uri, link, a);
+            string a = "";
+            string url = "";
+            if (i > 0)
+            {
+                a = string.Concat("?page=", i);
+                url = string.Concat(uri, link, a);
+            }
+            url = string.Concat(uri, link);
             string html = CrawlDataFromURL(url);
             string Title = "";
 
@@ -175,6 +222,7 @@ namespace ConsoleApp1
             }
         }
 
+        //Viết dữ liệu ra ngoài file text
         static void WriteData(string html, string Title)
         {
 
@@ -200,9 +248,7 @@ namespace ConsoleApp1
             int ChoPhepDatTruoc = 0; //Cho phép đặt trước
             int BanRieng = 0; //Bán riêng
             int ChoPhepDanhGia = 1; // Cho phép đánh giá của khách hàng
-            string DanhMuc = Title;
-            DanhMuc = string.Concat("\"", DanhMuc);
-            DanhMuc = string.Concat(DanhMuc, "\"");//Danh Mục, loại sản phẩm
+            string DanhMuc = Title;//Danh Mục, loại sản phẩm
             int ViTri = 0; // Vị Trí
 
             // Không mặc định
@@ -299,6 +345,13 @@ namespace ConsoleApp1
                 sw.Write(","); //"Giá bán thường",
             }
 
+            //Mèo > Thức ăn khô cho Mèo
+            //Chó > Thức ăn khô cho Chó
+            // Tùy chọn danh mục cha
+            //DanhMuc = string.Concat("Mèo > ", DanhMuc);
+            DanhMuc = string.Concat("Chó > ", DanhMuc);
+            DanhMuc = string.Concat("\"", DanhMuc);
+            DanhMuc = string.Concat(DanhMuc, "\"");
             sw.Write(DanhMuc);
             sw.Write(","); // "Danh mục",
 
@@ -306,8 +359,8 @@ namespace ConsoleApp1
 
             var imagestep1 = Regex.Matches(html, @"Gallery(.*?)End", RegexOptions.Singleline);
             var imagestep2 = Regex.Matches(imagestep1[0].ToString(), @"nopadding(.*?)script", RegexOptions.Singleline);
-            var imagestep3 = Regex.Matches(imagestep2[0].ToString(), @"<img data-lazy=(.*?)\.png|<img data-lazy=(.*?)\.jpg", RegexOptions.Singleline);
-            HinhAnh = Regex.Match(imagestep3[0].ToString(), @"bizweb(.*?)\.jpg|bizweb(.*?)\.png", RegexOptions.Singleline).Value
+            var imagestep3 = Regex.Matches(imagestep2[0].ToString(), @"<img data-lazy=(.*?)\.png|<img data-lazy=(.*?)\.jpg|<img data-lazy=(.*?)\.gif", RegexOptions.Singleline);
+            HinhAnh = Regex.Match(imagestep3[0].ToString(), @"bizweb(.*?)\.jpg|bizweb(.*?)\.png|bizweb(.*?)\.gif", RegexOptions.Singleline).Value
                 .Replace("lazy=", "").Replace("\"", "");
 
             HinhAnh = string.Concat("http://", HinhAnh);
@@ -323,7 +376,7 @@ namespace ConsoleApp1
             sw.Write(",");//,Upsells,
             sw.Write(","); //"Bán chéo"
             sw.Write(","); //,"URL ngoài"
-            sw.Write("\"Mua ngay đi!Trước khi!Mọi điều dần tồi tệ hơn\""); sw.Write(",");//,"Nội dung nút bấm",
+            sw.Write("\"Mua ngay!\""); sw.Write(",");//,"Nội dung nút bấm",
             sw.WriteLine(ViTri); //,"Vị trí"
 
         }
