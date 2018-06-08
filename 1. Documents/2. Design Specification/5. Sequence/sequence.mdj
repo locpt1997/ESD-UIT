@@ -8547,6 +8547,85 @@
 							"name": "Role7"
 						}
 					]
+				},
+				{
+					"_type": "UMLCollaboration",
+					"_id": "AAAAAAFj3sFbKaqk31k=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "Collaboration5",
+					"ownedElements": [
+						{
+							"_type": "UMLInteraction",
+							"_id": "AAAAAAFj3sFbKaqlCNw=",
+							"_parent": {
+								"$ref": "AAAAAAFj3sFbKaqk31k="
+							},
+							"name": "Interaction1",
+							"ownedElements": [
+								{
+									"_type": "UMLSequenceDiagram",
+									"_id": "AAAAAAFj3sFbKaqmG0k=",
+									"_parent": {
+										"$ref": "AAAAAAFj3sFbKaqlCNw="
+									},
+									"name": "Check out",
+									"ownedViews": [
+										{
+											"_type": "UMLFrameView",
+											"_id": "AAAAAAFj3sFbKaqnGbM=",
+											"_parent": {
+												"$ref": "AAAAAAFj3sFbKaqmG0k="
+											},
+											"model": {
+												"$ref": "AAAAAAFj3sFbKaqmG0k="
+											},
+											"subViews": [
+												{
+													"_type": "LabelView",
+													"_id": "AAAAAAFj3sFbKqqoRt8=",
+													"_parent": {
+														"$ref": "AAAAAAFj3sFbKaqnGbM="
+													},
+													"font": "Arial;13;0",
+													"left": 94.97900390625,
+													"top": 13,
+													"width": 59.53173828125,
+													"height": 13,
+													"text": "Check out"
+												},
+												{
+													"_type": "LabelView",
+													"_id": "AAAAAAFj3sFbKqqp7Aw=",
+													"_parent": {
+														"$ref": "AAAAAAFj3sFbKaqnGbM="
+													},
+													"font": "Arial;13;1",
+													"left": 29,
+													"top": 13,
+													"width": 60.97900390625,
+													"height": 13,
+													"text": "interaction"
+												}
+											],
+											"font": "Arial;13;0",
+											"left": 24,
+											"top": 8,
+											"width": 945,
+											"height": 697,
+											"nameLabel": {
+												"$ref": "AAAAAAFj3sFbKqqoRt8="
+											},
+											"frameTypeLabel": {
+												"$ref": "AAAAAAFj3sFbKqqp7Aw="
+											}
+										}
+									]
+								}
+							]
+						}
+					]
 				}
 			]
 		}
