@@ -1,0 +1,116 @@
+.image-show
+{
+	height: 270px;
+}
+.tab-content
+{
+	border-radius: 0 0 4px 4px;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.04);
+    background-color: #FFF;
+    border: 1px solid #EEE;
+    border-top: 0;
+    padding: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.img-detail
+{
+	width: 400px;
+	height: 400px;
+}
+.btn-custom
+{
+	border-radius: 0rem;
+	padding: 10px 30px 10px 30px;
+}
+.btn-custom-ograne
+{
+	border-radius: 0rem;
+	padding: 10px 30px 10px 30px;
+	background: #F44F00;
+	border: 1px solid #F44F00;
+}
+.btn-custom-ograne:hover
+{
+	background: #F4110f;
+	border: 1px solid #F4110f;
+}
+.quantity
+{
+	text-align: center;
+    width: 2.5em;
+    height: 2.7143em;
+    padding-left: 0;
+    padding-right: 0;
+    border: 1px solid #cccccc;
+}
+.quantity-add
+{
+	padding: 9px 15px 9px 15px;
+	margin-right: 5px;
+	margin-left: 5px;
+	border: 1px solid #cccccc;
+}
+.quantity-add:hover
+{
+	background: #f3f3f3;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+     -webkit-appearance: none;}
+
+.custom-breadcrumb
+{
+	background: white;
+	margin-top: 15px;
+}
+.custom-breadcrumb li
+{
+	margin-right: 5px;
+}
+.custom-breadcrumb a:hover
+{
+	text-decoration: none;
+}
+.checkout-note
+{
+	height: 100px;
+}
+.card-custom
+{
+	height: auto;
+}
+
+.btn-custom-great
+{
+	border-radius: 0rem;
+	padding: 10px 30px 10px 30px;
+	background: #00bfa5;
+	border: 1px solid #00bfa5;
+}
+.btn-custom-great:hover
+{
+	background: #00afa5;
+	border: 1px solid #00afa5;
+}
+#customer_detail
+{
+	margin-bottom: 0.915rem;
+}
+.card-verify
+{
+	max-width: 22rem;
+}
+.notification-validate-code
+{
+	margin-bottom: 0px;
+}
+.btn-notification-validate-code
+{
+	padding: 0px;
+}
+.bg-pipu
+{
+	background: #29537D;
+}
