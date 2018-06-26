@@ -69,7 +69,7 @@ namespace ConsoleApp1
             //}
 
             CrawlLinks(uri);
-           // //craw cho mèo
+            // //craw cho mèo
             //for (int i = 0; i < ListMenuLinksCat.Length; i++)
             //{
 
@@ -82,17 +82,23 @@ namespace ConsoleApp1
 
             //}
 
-            //Craw cho chó
+            //Craw cho chó [0-17]
             for (int i = 0; i < ListMenuLinksDog.Length; i++)
             {
 
                 int a = 0;
                 CountPageinUrl(uri, ListMenuLinksDog[i], ref a);
-                for (int j = 1; j <= a; j++)
+                if (a > 0)
                 {
-                    CrawProduct(uri, ListMenuLinksDog[i], j);
+                    for (int j = 1; j <= a; j++)
+                    {
+                        CrawProduct(uri, ListMenuLinksDog[i], j);
+                    }
                 }
-
+                else
+                {
+                    CrawProduct(uri, ListMenuLinksDog[i], 0);
+                }
             }
 
             sw.Flush();
@@ -266,11 +272,8 @@ namespace ConsoleApp1
             sw.Write(",");//"Mã sản phẩm"
 
             var TenSp = Regex.Matches(html, @"page_title(.*?)</h1", RegexOptions.Singleline);
-            foreach (var t in TenSp)
-            {
-                Ten = Regex.Match(t.ToString(), @">(.*?)</h1", RegexOptions.Singleline).Value.Replace(">", "").Replace("</h1", "").Replace("<h1", "").
+            Ten = Regex.Match(TenSp[0].ToString(), @">(.*?)</h1", RegexOptions.Singleline).Value.Replace(">", "").Replace("</h1", "").Replace("<h1", "").
                     Replace("\t", "").Replace("\n", "");
-            }
             Ten = string.Concat("\"", Ten);
             Ten = string.Concat(Ten, "\"");
             sw.Write(Ten);
