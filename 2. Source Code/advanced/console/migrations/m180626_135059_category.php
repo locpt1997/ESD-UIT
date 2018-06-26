@@ -3,17 +3,24 @@
 use yii\db\Migration;
 
 /**
- * Class m180626_075757_customer
+ * Class m180626_135059_category
  */
-class m180626_075757_customer extends Migration
+class m180626_135059_category extends Migration
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+
+    }
 
     /**
      * {@inheritdoc}
      */
     public function safeDown()
     {
-        echo "m180626_075757_customer cannot be reverted.\n";
+        echo "m180626_135059_category cannot be reverted.\n";
 
         return false;
     }
@@ -27,24 +34,20 @@ class m180626_075757_customer extends Migration
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
-        $this->createTable('{{%customer}}', [
+
+        $this->createTable('{{%category}}', [
             'id' => $this->primaryKey(),
-            'code' => $this->string()->notNull()->unique(),
-            'name' => $this->string()->notNull(),
-            'gender' => $this->boolean(),
-            'birthday' => $this->date(),
-            'email' => $this->string()->unique(),
-            'contact_number' => $this->string(),
-            'address' => $this->string(),
-            'location_name' => $this->string(),
-    
+            'name' => $this->string(),
+            'description' => $this->string(),
+
         ], $tableOptions);
     }
 
     public function down()
     {
-        echo "m180626_075757_customer cannot be reverted.\n";
+        echo "m180626_135059_category cannot be reverted.\n";
+
         return false;
     }
+    
 }
-

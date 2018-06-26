@@ -3,17 +3,24 @@
 use yii\db\Migration;
 
 /**
- * Class m180626_075757_customer
+ * Class m180626_151351_order_detail
  */
-class m180626_075757_customer extends Migration
+class m180626_151351_order_detail extends Migration
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+
+    }
 
     /**
      * {@inheritdoc}
      */
     public function safeDown()
     {
-        echo "m180626_075757_customer cannot be reverted.\n";
+        echo "m180626_151351_order_detail cannot be reverted.\n";
 
         return false;
     }
@@ -27,24 +34,23 @@ class m180626_075757_customer extends Migration
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
-        $this->createTable('{{%customer}}', [
+
+        $this->createTable('{{%order_detail}}', [
             'id' => $this->primaryKey(),
-            'code' => $this->string()->notNull()->unique(),
-            'name' => $this->string()->notNull(),
-            'gender' => $this->boolean(),
-            'birthday' => $this->date(),
-            'email' => $this->string()->unique(),
-            'contact_number' => $this->string(),
-            'address' => $this->string(),
-            'location_name' => $this->string(),
-    
+            'productid' => $this->integer()->notNull()->unique(),
+            'price' => $this->integer()->notNull(),
+            'discount' => $this->integer(),
+            'discounrRatio' => $this->float(),
+
         ], $tableOptions);
+        $this->addForeignKey('fk_orderdetail_product','order_detail','productid','product','id');
     }
 
     public function down()
     {
-        echo "m180626_075757_customer cannot be reverted.\n";
+        echo "m180626_151351_order_detail cannot be reverted.\n";
+
         return false;
     }
+    
 }
-
