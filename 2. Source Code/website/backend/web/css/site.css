@@ -118,3 +118,9 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+.btn-link {
+    text-decoration: none !important;
+}
+.admin-right {
+    background-color: white;
+}

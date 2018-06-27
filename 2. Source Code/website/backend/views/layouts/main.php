@@ -32,7 +32,7 @@ AppAsset::register($this);
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar navbar-expand-lg navbar-dark bg-dark fixed-top',
+            'class' => 'navbar-inverse navbar-static-top',
         ],
     ]);
     $menuItems = [
@@ -51,20 +51,38 @@ AppAsset::register($this);
             . '</li>';
     }
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
+        'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $menuItems,
     ]);
     NavBar::end();
     ?>
 
-    <div class="container">
+    <div class="container-fluid bg-info">
+    <div class="row">
+        <div class="col-md-2 aside-left bg-info">
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <?php echo Html::a('Quản lí nhóm hàng',['/category/index'],['class'=>['btn btn-link']]); ?>
+                             </li>
+                             <li class="list-group-item">
+                                
+                             </li>
+                        </ul>
+                    </div>
+                </div>      
+            </div>
+        <div class='col-md-10 admin-right bg-info'>
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
+        </div>
     </div>
-</div>
+            
+    </div>
 
 <footer class="footer">
     <div class="container">
