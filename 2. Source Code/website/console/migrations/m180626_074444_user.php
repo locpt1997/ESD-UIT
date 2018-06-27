@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m180626_091507_user extends Migration
+class m180626_074444_user extends Migration
 {
     public function up()
     {
@@ -19,13 +19,10 @@ class m180626_091507_user extends Migration
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
             'email' => $this->string()->notNull()->unique(),
-
             'status' => $this->smallInteger()->notNull()->defaultValue(10),
-            'customerid' => $this->integer()->notNull(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
-        $this->addForeignKey('fk_user_customer', 'user', 'customerid', 'customer', 'id');
 
     }
 
