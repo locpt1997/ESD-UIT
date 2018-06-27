@@ -16,3 +16,10 @@ body {
 .nav-link:hover {
   color: green !important;
 }
+.btn-link {
+  text-decoration: none !important;
+  color: rgba(255,255,255,.5) !important;
+}
+.btn-link:hover{
+  color: green !important;
+}
