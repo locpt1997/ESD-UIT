@@ -46,7 +46,7 @@ class m180626_151656_order extends Migration
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
-        $this->addForeignKey('fk_order_product','order','customerid','customer','id');
+        $this->addForeignKey('fk_order_customer','order','customerid','customer','id');
     }
 
     public function down()

@@ -36,9 +36,7 @@ class m180626_132238_cart extends Migration
 
         $this->createTable('{{%cart}}', [
             'id' => $this->primaryKey(),
-            'customerid' => $this->integer()->notNull()->unique(),
-            'totalPrice' => $this->integer(),
-            
+            'customerid' => $this->integer()->notNull()->unique(),         
         ], $tableOptions);
         $this->addForeignKey('fk_cart_customer', 'cart', 'customerid', 'customer', 'id');
     }
