@@ -38,7 +38,7 @@ class m180626_135059_category extends Migration
         $this->createTable('{{%category}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
-            'description' => $this->string(),
+            'description' => $this->text(),
 
         ], $tableOptions);
     }

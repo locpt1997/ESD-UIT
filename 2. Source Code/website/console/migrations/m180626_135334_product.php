@@ -38,9 +38,9 @@ class m180626_135334_product extends Migration
         $this->createTable('{{%product}}', [
             'id' => $this->primaryKey(),
             'description' => $this->text(),
-            'basePrice' => $this->decimal(),
+            'basePrice' => $this->bigInteger(),
             'weight' => $this->float(),
-            'image' => $this->string(),
+            'image' => $this->text(),
             'categoryid' => $this->integer()->notNull(),
             'onHand' => $this->integer()->notNull(),
   

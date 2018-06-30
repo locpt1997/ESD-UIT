@@ -38,7 +38,7 @@ class m180626_151751_order_detail extends Migration
         $this->createTable('{{%order_detail}}', [
             'id' => $this->primaryKey(),
             'productid' => $this->integer()->notNull()->unique(),
-            'price' => $this->integer()->notNull(),
+            'price' => $this->bigInteger()->notNull(),
             'discount' => $this->integer(),
             'discounrRatio' => $this->float(),
             'orderid' => $this->integer(),

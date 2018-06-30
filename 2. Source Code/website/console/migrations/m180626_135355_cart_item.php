@@ -40,7 +40,7 @@ class m180626_135355_cart_item extends Migration
             'productid' => $this->integer()->notNull()->unique(),
             'cartid' => $this->integer()->notNull()->unique(),
             'quantity' => $this->integer()->notNull(),
-            'subTotal' => $this->integer()->notNull(),
+            'subTotal' => $this->bigInteger()->notNull(),
 
         ], $tableOptions);
         $this->addForeignKey('fk_cartitem_cart','cart_item','cartid','cart','id');
