@@ -40,6 +40,7 @@ class m180626_135334_product extends Migration
             'description' => $this->text(),
             'name' => $this->string(),
             'basePrice' => $this->bigInteger(),
+            
             'weight' => $this->float(),
             'image' => $this->text(),
             'categoryid' => $this->integer()->notNull(),
