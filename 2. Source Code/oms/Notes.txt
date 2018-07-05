@@ -1,0 +1,8 @@
+﻿1. Website Bán Hàng - Đức
+
+2. Order Management System - Tín
+
+3. Customer Management System - Lộc - Failed
+
+4. Integration Hub - Đức, Tín
+5. Crawler - Lộc

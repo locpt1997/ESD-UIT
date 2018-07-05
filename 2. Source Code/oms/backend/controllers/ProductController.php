@@ -1,0 +1,204 @@
+<?php
+
+namespace backend\controllers;
+
+use Yii;
+use backend\models\Product;
+use backend\models\search\Product as ProductSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use backend\models\Admin;
+use common\models\WebClient;
+use yii\data\ArrayDataProvider;
+/**
+ * ProductController implements the CRUD actions for Product model.
+ */
+class ProductController extends Controller
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Lists all Product models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel = new ProductSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    public function actionKiotvietProduct()
+    {
+        $client = new WebClient("anything");
+        $client->setGet();
+        $admin = new Admin();
+        $access_token = $admin->getAccessToken();
+        $url = 'https://public.kiotapi.com/products';
+        $client->setHeader("Retailer: forpets");
+        $client->setHeader("Authorization: Bearer $access_token");
+        $productsKiotviet = json_decode($client->createCurl($url))->data;
+        $productsDB = (new \yii\db\Query())
+                        ->select('*')
+                        ->from('product')
+                        ->all();
+        foreach($productsKiotviet as  $key => $productKiotviet)
+        {
+            foreach($productsDB as $productDB)
+            {
+                if($productKiotviet->id != $productDB['id']){
+                    continue;
+                }
+                else{
+                    unset($productsKiotviet[$key]);
+                    break;
+                }
+            }
+            
+        }
+
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $productsKiotviet,
+        ]);
+        return $this->render('kiotviet-product', [
+            'dataProvider' => $dataProvider,
+
+        ]);
+    }
+
+    public function actionAddKiotvietProduct()
+    {
+        $count = 0;
+        $ids= Yii::$app->request->post('selection');
+        $client = new WebClient("anything");
+        $client->setGet();
+        $admin = new Admin();
+        $access_token = $admin->getAccessToken();
+        $url = 'https://public.kiotapi.com/products';
+        $client->setHeader("Retailer: forpets");
+        $client->setHeader("Authorization: Bearer $access_token");
+        $productsKiotviet = json_decode($client->createCurl($url))->data;
+        foreach($ids as $id)
+        {
+            foreach($productsKiotviet as $productKiotviet)
+            {
+                if($id == $productKiotviet->id)
+                {
+                    $urlProduct = 'https://public.kiotapi.com/products/'.$id;
+                    $productDetailKiotviet = json_decode($client->createCurl($urlProduct));
+                    $product = new Product();
+                    $product->id = $productDetailKiotviet->id;
+                    $product->name =  $productDetailKiotviet->fullName;
+                    $product->basePrice = $productDetailKiotviet->basePrice;
+                    $product->image = $productDetailKiotviet->images[0];
+                    $product->categoryid = $productDetailKiotviet->categoryId;
+                    $product->onHand = $productDetailKiotviet->inventories[0]->onHand;
+                    $product->description = $productDetailKiotviet->description;
+                    $product->save();
+                    $count++;
+                }
+            }
+        }
+        return $this->render('add-kiotviet-product', [
+            'model' => $ids,
+            'count' => $count
+        ]);
+    }
+    /**
+     * Displays a single Product model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new Product model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Product();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing Product model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Deletes an existing Product model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Product model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Product the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Product::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+}
