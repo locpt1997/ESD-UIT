@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Category;
-use backend\models\search\Category as CategorySearch;
+use backend\models\Product;
+use backend\models\search\Product as ProductSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,9 +12,9 @@ use backend\models\Admin;
 use common\models\WebClient;
 use yii\data\ArrayDataProvider;
 /**
- * CategoryController implements the CRUD actions for Category model.
+ * ProductController implements the CRUD actions for Product model.
  */
-class CategoryController extends Controller
+class ProductController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -32,12 +32,12 @@ class CategoryController extends Controller
     }
 
     /**
-     * Lists all Category models.
+     * Lists all Product models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CategorySearch();
+        $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,62 +45,45 @@ class CategoryController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionKiotvietCategory()
+    public function actionKiotvietProduct()
     {
         $client = new WebClient("anything");
         $client->setGet();
         $admin = new Admin();
         $access_token = $admin->getAccessToken();
-        $url = 'https://public.kiotapi.com/categories';
+        $url = 'https://public.kiotapi.com/products';
         $client->setHeader("Retailer: forpets");
         $client->setHeader("Authorization: Bearer $access_token");
-        $categoriesKiotviet = json_decode($client->createCurl($url))->data;
-        $categoriesDB = (new \yii\db\Query())
-                        ->select(['id', 'name'])
-                        ->from('category')
+        $productsKiotviet = json_decode($client->createCurl($url))->data;
+        $productsDB = (new \yii\db\Query())
+                        ->select('*')
+                        ->from('product')
                         ->all();
-        foreach($categoriesKiotviet as  $key => $categoryKiotviet)
+        foreach($productsKiotviet as  $key => $productKiotviet)
         {
-            foreach($categoriesDB as $categoryDB)
+            foreach($productsDB as $productDB)
             {
-                if($categoryKiotviet->categoryName !== $categoryDB['name']){
+                if($productKiotviet->id != $productDB['id']){
                     continue;
                 }
                 else{
-                    unset($categoriesKiotviet[$key]);
+                    unset($productsKiotviet[$key]);
                     break;
                 }
             }
             
         }
+
         $dataProvider = new ArrayDataProvider([
-            'allModels' => $categoriesKiotviet,
+            'allModels' => $productsKiotviet,
         ]);
-        return $this->render('kiotviet-category', [
+        return $this->render('kiotviet-product', [
             'dataProvider' => $dataProvider,
-        ]);
-    }
-    
-    /**
-     * Displays a single Category model.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
 
-        return $this->render('view', [
-            'model' => $this->findModel($id),
         ]);
     }
 
-    /**
-     * Creates a new Category model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionAddKiotvietCategory()
+    public function actionAddKiotvietProduct()
     {
         $count = 0;
         $ids= Yii::$app->request->post('selection');
@@ -108,32 +91,69 @@ class CategoryController extends Controller
         $client->setGet();
         $admin = new Admin();
         $access_token = $admin->getAccessToken();
-        $url = 'https://public.kiotapi.com/categories';
+        $url = 'https://public.kiotapi.com/products';
         $client->setHeader("Retailer: forpets");
         $client->setHeader("Authorization: Bearer $access_token");
-        $categoriesKiotviet = json_decode($client->createCurl($url))->data;
-        foreach($ids as $key => $id)
+        $productsKiotviet = json_decode($client->createCurl($url))->data;
+        foreach($ids as $id)
         {
-            foreach($categoriesKiotviet as $categoryKiotviet)
+            foreach($productsKiotviet as $productKiotviet)
             {
-                if($id == $categoryKiotviet->categoryId)
+                if($id == $productKiotviet->id)
                 {
-                    $category = new Category();
-                    $category->id = $categoryKiotviet->categoryId;
-                    $category->name =  $categoryKiotviet->categoryName;
-                    $category->save();
+                    $urlProduct = 'https://public.kiotapi.com/products/'.$id;
+                    $productDetailKiotviet = json_decode($client->createCurl($urlProduct));
+                    $product = new Product();
+                    $product->id = $productDetailKiotviet->id;
+                    $product->name =  $productDetailKiotviet->fullName;
+                    $product->basePrice = $productDetailKiotviet->basePrice;
+                    $product->image = $productDetailKiotviet->images[0];
+                    $product->categoryid = $productDetailKiotviet->categoryId;
+                    $product->onHand = $productDetailKiotviet->inventories[0]->onHand;
+                    $product->description = $productDetailKiotviet->description;
+                    $product->save();
                     $count++;
                 }
             }
         }
-        return $this->render('add-kiotviet-category', [
+        return $this->render('add-kiotviet-product', [
             'model' => $ids,
             'count' => $count
         ]);
     }
+    /**
+     * Displays a single Product model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
 
     /**
-     * Updates an existing Category model.
+     * Creates a new Product model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Product();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing Product model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -153,7 +173,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Deletes an existing Category model.
+     * Deletes an existing Product model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -167,15 +187,15 @@ class CategoryController extends Controller
     }
 
     /**
-     * Finds the Category model based on its primary key value.
+     * Finds the Product model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Category the loaded model
+     * @return Product the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Category::findOne($id)) !== null) {
+        if (($model = Product::findOne($id)) !== null) {
             return $model;
         }
 

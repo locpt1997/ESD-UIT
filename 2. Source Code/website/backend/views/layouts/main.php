@@ -63,11 +63,17 @@ AppAsset::register($this);
                 <div class="panel panel-primary">
                     <div class="panel-body">
                         <ul class="list-group">
+                        <li class="list-group-item">
+                                <?php echo Html::a('Quản lí đơn hàng',['/order/index'],['class'=>['btn btn-link']]); ?>
+                             </li>
                             <li class="list-group-item">
                                 <?php echo Html::a('Quản lí nhóm hàng',['/category/index'],['class'=>['btn btn-link']]); ?>
                              </li>
                              <li class="list-group-item">
-                                
+                             <?php echo Html::a('Quản lí khách hàng',['/customer/index'],['class'=>['btn btn-link']]); ?>
+                             </li>
+                             <li class="list-group-item">
+                             <?php echo Html::a('Quản lí sản phẩm',['/product/index'],['class'=>['btn btn-link']]); ?>
                              </li>
                         </ul>
                     </div>
