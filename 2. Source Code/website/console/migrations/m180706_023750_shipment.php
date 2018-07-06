@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m180626_135059_category
+ * Class m180706_023750_shipment
  */
-class m180626_135059_category extends Migration
+class m180706_023750_shipment extends Migration
 {
     /**
      * {@inheritdoc}
@@ -20,7 +20,7 @@ class m180626_135059_category extends Migration
      */
     public function safeDown()
     {
-        echo "m180626_135059_category cannot be reverted.\n";
+        echo "m180706_023750_shipment cannot be reverted.\n";
 
         return false;
     }
@@ -35,16 +35,21 @@ class m180626_135059_category extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%category}}', [
+        $this->createTable('{{%shipment}}', [
             'id' => $this->primaryKey(),
-            'name' => $this->string(),
-            'description' => $this->text(),
+            'deliveryCode' => $this->string(),
+            'shippingType' => $this->string(),
+            'shippingCost' => $this->integer(),
+            'shippingAddress' => $this->string(),
+            'orderId' => $this->integer(),
         ], $tableOptions);
+        $this->addForeignKey('fk_shipment_order','shipment','orderId','order','id');
+
     }
 
     public function down()
     {
-        echo "m180626_135059_category cannot be reverted.\n";
+        echo "m180706_023750_shipment cannot be reverted.\n";
 
         return false;
     }

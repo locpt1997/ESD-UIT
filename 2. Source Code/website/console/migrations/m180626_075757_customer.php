@@ -38,7 +38,8 @@ class m180626_075757_customer extends Migration
             'address' => $this->string(),
             'location_name' => $this->string(),
             'userid' => $this->integer(),
-        ], $tableOptions);$this->addForeignKey('fk_customer_user',  'customer', 'userid', 'user', 'id');
+        ], $tableOptions);
+        $this->addForeignKey('fk_customer_user',  'customer', 'userid', 'user', 'id');
         
     }
 
