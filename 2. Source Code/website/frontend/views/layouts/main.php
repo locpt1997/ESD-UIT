@@ -24,7 +24,7 @@ Yii::$app->name='Boss Care';
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body>
+<body class="bg-light">
 <?php $this->beginBody() ?>
        <!-- Navigation -->
        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -46,10 +46,11 @@ Yii::$app->name='Boss Care';
             . '</li>' ?>
             <?php else: ?>
             <li class="nav-item">
-              <a class="nav-link" href="/website/site/login">Đăng nhập</a>
+              <?php echo Html::a('Đăng nhập','/site/login',['class' => 'nav-link']); ?>
+              <!-- <a class="nav-link" href="site/login">Đăng nhập</a> -->
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/website/site/signup">Đăng ký</a>
+              <a class="nav-link" href="/site/signup">Đăng ký</a>
             </li>
             <?php endif; ?>
           </ul>

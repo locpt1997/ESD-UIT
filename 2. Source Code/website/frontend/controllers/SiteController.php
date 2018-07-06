@@ -12,6 +12,10 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use app\models\Product;
+use app\models\Category;
+// use frontend\Libs\Lecop;
+
 
 /**
  * Site controller
@@ -72,7 +76,16 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model1 = new Product();
+        $data = $model1->find()->all();
+        $model2 = new Category();
+        $category_dog = $model2->find()->where(['like', 'name', '%Dog%', false])->all();
+        $category_cat = $model2->find()->where(['like', 'name', '%Cat%', false])->all();
+        return $this->render('index',[
+            'data' => $data,
+            'category_dog'=>$category_dog,
+            'category_cat'=>$category_cat,
+        ]);
     }
 
     /**
@@ -213,5 +226,15 @@ class SiteController extends Controller
         return $this->render('resetPassword', [
             'model' => $model,
         ]);
+    }
+    public function actionProductDetail($id)
+    {
+        $model = new Product();
+        $product = Product::find()->where(['id'=>$id])->one();
+        return $this->render('product-detail',['product'=>$product]);
+    }
+    public function actionCheckout($quantity, $id)
+    {
+        return $this->render('checkout',['id'=>$id, 'quantity'=>$quantity]);
     }
 }
